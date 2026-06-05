@@ -1,0 +1,19 @@
+<UserControl x:Class="Chorder.UI.Views.Statistics.PlayHistoryPageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ListBox ItemsSource="{Binding DailyStats}">
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding Date, StringFormat=d}"/>
+                    <TextBlock Grid.Column="2" Text="{Binding PlayCount}" Margin="8,0,0,0"/>
+                </Grid>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
+</UserControl>

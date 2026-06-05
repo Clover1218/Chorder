@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 namespace Chorder.Models.Entities
 {
     public class Playlist{
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public int Position { get; set; }
         public List<Track> Tracks { get; set; } = new();
 
     }

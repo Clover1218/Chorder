@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chorder.Clients", "Chorder.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chorder.Models", "Chorder.Models\Chorder.Models.csproj", "{64E7750E-BD15-7D4E-73A4-4332C089F206}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chorder.Repository", "Chorder.Repository\Chorder.Repository.csproj", "{7776F605-B24E-41DD-B62C-515950D77F40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{64E7750E-BD15-7D4E-73A4-4332C089F206}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64E7750E-BD15-7D4E-73A4-4332C089F206}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64E7750E-BD15-7D4E-73A4-4332C089F206}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7776F605-B24E-41DD-B62C-515950D77F40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7776F605-B24E-41DD-B62C-515950D77F40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7776F605-B24E-41DD-B62C-515950D77F40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7776F605-B24E-41DD-B62C-515950D77F40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

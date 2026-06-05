@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,7 +36,7 @@ public partial class PlaylistPickerViewModel : ObservableObject
     [RelayCommand]
     public void AddToPlaylist(PlaylistLibarayItemViewModel playlist)
     {
-        playlist.Source.Tracks.Add(_track);
+        _playlistService.AddTrack(playlist.Source, _track);
         OnRequestClose?.Invoke();
     }
 }

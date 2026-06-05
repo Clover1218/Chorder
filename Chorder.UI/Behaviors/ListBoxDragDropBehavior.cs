@@ -1,4 +1,4 @@
-﻿using Chorder.UI.ViewModels;
+using Chorder.UI.ViewModels;
 using Microsoft.Xaml.Behaviors;
 using System;
 using System.Collections.Generic;
@@ -11,11 +11,14 @@ using System.Windows.Input;
 
 namespace Chorder.UI.Behaviors
 {
-    public class ListBoxDragDropBehavior : Behavior<ListBox>{
+    public class ListBoxDragDropBehavior : Behavior<ListBox>
+    {
         private Point _dragStartPoint;
+        private Type _draggedType;
 
         protected override void OnAttached()
         {
+            AssociatedObject.AllowDrop = true;
             AssociatedObject.PreviewMouseLeftButtonDown += OnMouseDown;
             AssociatedObject.PreviewMouseMove += OnMouseMove;
             AssociatedObject.Drop += OnDrop;
@@ -31,6 +34,7 @@ namespace Chorder.UI.Behaviors
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             _dragStartPoint = e.GetPosition(null);
+            _draggedType = null;
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
@@ -49,35 +53,55 @@ namespace Chorder.UI.Behaviors
             if (listBox.SelectedItem == null)
                 return;
 
+            _draggedType = listBox.SelectedItem.GetType();
+
             DragDrop.DoDragDrop(listBox, listBox.SelectedItem, DragDropEffects.Move);
         }
 
         private void OnDrop(object sender, DragEventArgs e)
         {
-            if (!e.Data.GetDataPresent(typeof(PlaybackItemViewModel)))
-                return;
-
-            var sourceItem = e.Data.GetData(typeof(PlaybackItemViewModel)) as PlaybackItemViewModel;
-
             var listBox = (ListBox)sender;
+            if (listBox.DataContext is not MainViewModel vm)
+                return;
 
             var targetElement = e.OriginalSource as FrameworkElement;
             if (targetElement == null) return;
 
             var targetItem = targetElement.DataContext;
+            if (targetItem == null) return;
 
-            if (sourceItem == null || targetItem == null || sourceItem == targetItem)
-                return;
-
-            int oldIndex = listBox.Items.IndexOf(sourceItem);
-            int newIndex = listBox.Items.IndexOf(targetItem);
-
-            if (oldIndex < 0 || newIndex < 0) return;
-
-            // ⭐ 调用VM命令（关键）
-            if (listBox.DataContext is Chorder.UI.ViewModels.MainViewModel vm)
+            if (e.Data.GetDataPresent(typeof(PlaybackItemViewModel)))
             {
+                var sourceItem = e.Data.GetData(typeof(PlaybackItemViewModel)) as PlaybackItemViewModel;
+                if (sourceItem == null || sourceItem == targetItem) return;
+
+                int oldIndex = listBox.Items.IndexOf(sourceItem);
+                int newIndex = listBox.Items.IndexOf(targetItem);
+                if (oldIndex < 0 || newIndex < 0) return;
+
                 vm.PlaybackQueueMoveCommand.Execute((oldIndex, newIndex));
+            }
+            else if (e.Data.GetDataPresent(typeof(PlaylistLibarayItemViewModel)))
+            {
+                var sourceItem = e.Data.GetData(typeof(PlaylistLibarayItemViewModel)) as PlaylistLibarayItemViewModel;
+                if (sourceItem == null || sourceItem == targetItem) return;
+
+                int oldIndex = listBox.Items.IndexOf(sourceItem);
+                int newIndex = listBox.Items.IndexOf(targetItem);
+                if (oldIndex < 0 || newIndex < 0) return;
+
+                vm.PlaylistMoveCommand.Execute((oldIndex, newIndex));
+            }
+            else if (e.Data.GetDataPresent(typeof(PlaylistTrackItemViewModel)))
+            {
+                var sourceItem = e.Data.GetData(typeof(PlaylistTrackItemViewModel)) as PlaylistTrackItemViewModel;
+                if (sourceItem == null || sourceItem == targetItem) return;
+
+                int oldIndex = listBox.Items.IndexOf(sourceItem);
+                int newIndex = listBox.Items.IndexOf(targetItem);
+                if (oldIndex < 0 || newIndex < 0) return;
+
+                vm.PlaylistTrackMoveCommand.Execute((oldIndex, newIndex));
             }
         }
     }

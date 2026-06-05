@@ -15,11 +15,14 @@ namespace Chorder.Models.Entities
         public string? Title { get; set; }
         public string? Author { get; set; }
         public string? Duration { get; set; }
+
+        public string? CoverPath { get; set; }
     }
     public class BiliBiliPageItem
     {   
         public int Page { get; set; }
         public string? Title { get; set; }
         public int? Duration { get; set; }
+        public string? CoverPath { get; set; }
     }
 }

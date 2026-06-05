@@ -1,0 +1,88 @@
+<UserControl x:Class="Chorder.UI.Views.PlayerBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cvt="clr-namespace:Chorder.UI.Converters"
+             mc:Ignorable="d"
+             Height="90">
+
+    <UserControl.Resources>
+        <cvt:PlayPauseConverter x:Key="PlayPauseConverter"/>
+        <cvt:LoopModeConverter x:Key="LoopModeConverter"/>
+        <cvt:ShuffleConverter x:Key="ShuffleConverter"/>
+    </UserControl.Resources>
+
+    <Border Background="{StaticResource Brush_White}"
+            BorderBrush="{StaticResource Brush_Black}"
+            BorderThickness="0,2,0,0">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 左侧：歌曲信息 -->
+            <StackPanel Orientation="Vertical" Margin="12,8">
+                <TextBlock Text="NOW PLAYING"
+                           Foreground="{StaticResource Brush_Red}"
+                           FontFamily="{StaticResource Font_Bold}"
+                           FontSize="11"/>
+                <TextBlock Text="{Binding Title}"
+                           Foreground="{StaticResource Brush_Black}"
+                           FontFamily="{StaticResource Font_Bold}"
+                           FontSize="20"
+                           TextTrimming="CharacterEllipsis"/>
+            </StackPanel>
+
+            <!-- 中间：控制 -->
+            <StackPanel Grid.Column="1"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="0,5">
+
+                    <Button Content="⏮" Width="36" Margin="4" FontSize="16"
+                    Command="{Binding PreviousCommand}"/>
+                    <Button Content="{Binding IsPlaying, Converter={StaticResource PlayPauseConverter}}"
+                            Width="44" Margin="4" FontSize="16"
+                            Command="{Binding TogglePlayCommand}"/>
+                    <Button Content="⏭" Width="36" Margin="4" FontSize="16"
+                            Command="{Binding NextCommand}"/>
+                    <Button Content="{Binding LoopMode, Converter={StaticResource LoopModeConverter}}"
+                            Width="36" Margin="4" FontSize="14"
+                            Command="{Binding ToggleLoopModeCommand}"/>
+                    <Button Content="{Binding IsShuffle, Converter={StaticResource ShuffleConverter}}"
+                            Width="36" Margin="4" FontSize="14"
+                            Command="{Binding ToggleShuffleCommand}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding CurrentTimeString}"
+                               Foreground="{StaticResource Brush_Black}"
+                               FontWeight="Bold"
+                               Margin="5"/>
+                    <Slider Minimum="0" Maximum="1" Width="350"
+                            Value="{Binding Position, Mode=TwoWay}"/>
+                    <TextBlock Text="{Binding DurationString}"
+                               Foreground="{StaticResource Brush_Black}"
+                               FontWeight="Bold"
+                               Margin="5"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- 右侧：音量 -->
+            <StackPanel Grid.Column="2"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="🔊" FontSize="18" Margin="5"/>
+                <Slider Minimum="0" Maximum="100" Width="90"
+                        Value="{Binding Volume, Mode=TwoWay}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

@@ -17,10 +17,10 @@ namespace Chorder.Clients.Searcher
         {
             try
             {
-                string url = $"https://api.bilibili.com/x/web-interface/search/type?search_type=video&keyword={keyword}";
+                string url = $"https://api.bilibili.com/x/web-interface/search/type?search_type=video&keyword={keyword}&page=1";
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Add("Referer", "https://search.bilibili.com");
-                request.Headers.Add("User-Agent", "Mozilla/5.0");
+                request.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36");
                 var response = await _http.SendAsync(request);
                 response.EnsureSuccessStatusCode();
 
@@ -39,7 +39,8 @@ namespace Chorder.Clients.Searcher
                         Title = CleanKeywordHtml(v.GetProperty("title").GetString()),
                         Bvid = v.GetProperty("bvid").GetString(),
                         Author = v.GetProperty("author").GetString(),
-                        Duration = v.GetProperty("duration").GetString()
+                        Duration = v.GetProperty("duration").GetString(),
+                        CoverPath = "https:"+v.GetProperty("pic").GetString()
                     };
                     items.Add(item);
                 }
@@ -69,6 +70,7 @@ namespace Chorder.Clients.Searcher
                 {
                     return new List<BiliBiliPageItem>();
                 }
+                var coverPath=root.GetProperty("data").GetProperty("pic").GetString();
                 var items = new List<BiliBiliPageItem>();
                 foreach (var v in results.EnumerateArray())
                 {
@@ -76,7 +78,8 @@ namespace Chorder.Clients.Searcher
                     {
                         Page = v.GetProperty("page").GetInt32(),
                         Title = v.GetProperty("part").GetString(),
-                        Duration = v.GetProperty("duration").GetInt32()
+                        Duration = v.GetProperty("duration").GetInt32(),
+                        CoverPath = coverPath
                     };
                     items.Add(item);
                 }

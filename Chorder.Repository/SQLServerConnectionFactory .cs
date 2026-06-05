@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using System.Data;
 using Microsoft.Data.SqlClient;
 
-namespace Chorder.Clients.Storage {
+namespace Chorder.Repository {
     public class SQLServerConnectionFactory {
 
         public SqlConnection CreateConnection()
         {
-            return new SqlConnection("Server=localhost;Database=MusicPlayerDB;User Id=sa;Password=123456;TrustServerCertificate=True;");
+            return new SqlConnection("Server=localhost;Database=Chorder;User Id=sa;Password=123456;TrustServerCertificate=True;");
         }
     }
 

@@ -1,9 +1,10 @@
-﻿using Chorder.Clients.Searcher;
+using Chorder.Clients.Searcher;
 using Chorder.Models.Entities;
+using Chorder.Repository;
 using Chorder.Services;
 using Chorder.Services.Player;
 using Chorder.UI.ViewModels;
-using LibVLCSharp.Shared;
+using Chorder.ViewModels.Player;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
@@ -24,19 +25,29 @@ namespace Chorder.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private PlayerService _playerService = new PlayerService();
 
         public MainWindow()
         {
             InitializeComponent();
-            var BiliBili_searcher=new BiliBiliSearcher();
-            var search_service = new SearchService(BiliBili_searcher); // Service
-            var playbackQueue_service=new PlaybackQueueService();
-            var playlist_service= new PlaylistService();
-            var vm = new MainViewModel(search_service,_playerService,playbackQueue_service,playlist_service); // ViewModel
-        
-            this.DataContext = vm; // ⭐ 关键
+            var sqlConnection_factory= new SQLServerConnectionFactory();
+            var playbackQueue_repository=new PlaybackQueueRepository(sqlConnection_factory);
+            var playHistory_repository=new PlayHistoryRepository(sqlConnection_factory);
+            var playlist_repository=new PlaylistRepository(sqlConnection_factory);
+            var trackInfo_repository=new TrackInfoRepository(sqlConnection_factory);
+            var statistics_repository = new StatisticsRepository(sqlConnection_factory);
 
+            var trackInfo_service=new TrackInfoService(trackInfo_repository);
+            var BiliBili_searcher=new BiliBiliSearcher();
+            var search_service = new SearchService(BiliBili_searcher);
+            var playbackQueue_service=new PlaybackQueueService(playbackQueue_repository);
+           
+            var playlist_service= new PlaylistService(playlist_repository);
+            var player_service=new PlayerService(playHistory_repository, trackInfo_service);
+            var statistics_service = new StatisticsService(statistics_repository);
+
+            var vm = new MainViewModel(search_service,player_service,playbackQueue_service,playlist_service, trackInfo_service, statistics_service);
+            this.DataContext = vm;
+            
         }
         private async void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -55,42 +66,6 @@ namespace Chorder.UI
             //        await this._playerService.Play(node.Bvid,1);
             //    }
             //}
-        }
-        //private void PlaylistLibarayItem_DoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (sender is ListBoxItem item &&
-        //        item.DataContext is PlaylistLibarayItemViewModel vm){
-        //        vm.IsEditing = true;
-        //        e.Handled = true;
-        //    }
-        //}
-        private ListBoxItem _lastClickedItem;
-        private System.DateTime _lastClickTime;
-        private void PlaylistLibarayItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is not ListBoxItem item ||
-                item.DataContext is not PlaylistLibarayItemViewModel vm)
-                return;
-        
-            var now = DateTime.Now;
-        
-            // ⭐ 条件1：已经选中
-            bool isAlreadySelected = item.IsSelected;
-            (this.DataContext as MainViewModel).SelectedPlaylistChanged(vm);
-            // ⭐ 条件2：是同一个项
-            bool isSameItem = _lastClickedItem == item;
-        
-            // ⭐ 条件3：时间间隔（防止太慢）
-            bool isQuickClick = (now - _lastClickTime).TotalMilliseconds < 500;
-        
-            if (isAlreadySelected && isSameItem && isQuickClick)
-            {
-                vm.IsEditing = true;
-                //e.Handled = true;
-            }
-        
-            _lastClickedItem = item;
-            _lastClickTime = now;
         }
         private void ClosePopup(object sender, MouseButtonEventArgs e)
         {

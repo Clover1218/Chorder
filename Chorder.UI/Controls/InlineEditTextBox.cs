@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -62,10 +62,15 @@ namespace Chorder.UI.Controls
         }
     }
 
+    private bool _isCommitting;
+
     private void Commit()
     {
+        if (_isCommitting) return;
+        _isCommitting = true;
         CommitCommand?.Execute(CommitCommandParameter);
         IsEditing = false;
+        _isCommitting = false;
     }
 
     private void Cancel()

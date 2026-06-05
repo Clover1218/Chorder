@@ -1,0 +1,60 @@
+<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="Chorder.UI.Views.Statistics.SummaryPageView"
+             Width="706" Height="405">
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="686" Height="385">
+        <StackPanel Height="79" Orientation="Horizontal" RenderTransformOrigin="0.252,0.483" Width="684" HorizontalAlignment="Left">
+            <StackPanel.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="-1.644"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="-0.364"/>
+                </TransformGroup>
+            </StackPanel.RenderTransform>
+            <TextBlock FontSize="36" Foreground="Black" Width="685" TextAlignment="Center" RenderTransformOrigin="0.502,0.5" VerticalAlignment="Center" Height="60"><Run Text="截止至今，你已经在CHORDER累计听"/><Run Language="zh-cn" Text="了"/></TextBlock>
+        </StackPanel>
+        <StackPanel Height="66" Orientation="Horizontal" RenderTransformOrigin="0.252,0.483" Width="684">
+            <StackPanel.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="-1.644"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="-0.364"/>
+                </TransformGroup>
+            </StackPanel.RenderTransform>
+            <TextBlock Text="{Binding TotalPlayCount, FallbackValue=999}" FontSize="48" FontWeight="Bold" Width="314" TextAlignment="Right">
+                <TextBlock.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFAEC37D" Offset="0.004"/>
+                        <GradientStop Color="#FFF69000" Offset="1"/>
+                        <GradientStop Color="#FF2C1600"/>
+                        <GradientStop Color="#FED9FE00"/>
+                    </LinearGradientBrush>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <TextBlock FontSize="36" Foreground="Black" Width="147" RenderTransformOrigin="0.502,0.5" Height="60" VerticalAlignment="Bottom"><Run Language="zh-cn" Text=" 首歌曲"/></TextBlock>
+        </StackPanel>
+        <StackPanel Height="146" Orientation="Horizontal" RenderTransformOrigin="0.252,0.483" Width="684" HorizontalAlignment="Center">
+            <StackPanel.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="-1.644"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="-0.364"/>
+                </TransformGroup>
+            </StackPanel.RenderTransform>
+            <TextBlock FontSize="36" Foreground="Black" Width="335" TextAlignment="Justify" RenderTransformOrigin="0.502,0.5" Height="50" VerticalAlignment="Center" LineStackingStrategy="BlockLineHeight"><Run Language="zh-cn" Text="   "/><Run Text="累计播放时长"/><Run Text="——"/></TextBlock>
+            <TextBlock Text="{Binding TotalPlayTime, FallbackValue=100小时}" FontSize="24" Width="308" RenderTransformOrigin="0.5,0.5" Height="34" FontWeight="Bold" Foreground="#FF76D428" VerticalAlignment="Center" TextAlignment="Justify">
+                <TextBlock.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleY="0.173"/>
+                        <RotateTransform/>
+                        <TranslateTransform Y="1.036"/>
+                    </TransformGroup>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

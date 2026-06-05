@@ -19,9 +19,5 @@
     <ProjectReference Include="..\Chorder.Services\Chorder.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
-
 
 </Project>
